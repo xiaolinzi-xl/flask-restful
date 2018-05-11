@@ -5,7 +5,7 @@
    @time: 2018/05/11
 """
 
-from flask import Flask,jsonify,abort,make_response,request
+from flask import Flask, jsonify, abort, make_response, request
 
 app = Flask(__name__)
 
@@ -32,14 +32,15 @@ def index():
 
 @app.errorhandler(404)
 def not_found(error):
-    return make_response(jsonify({'error':'Not found'}),404)
+    return make_response(jsonify({'error': 'Not found'}), 404)
 
-@app.route('/todo/api/v1.0/tasks',methods=['GET'])
+
+@app.route('/todo/api/v1.0/tasks', methods=['GET'])
 def get_tasks():
     return jsonify(tasks)
 
 
-@app.route('/todo/api/v1.0/tasks/<int:task_id>',methods=['GET'])
+@app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['GET'])
 def get_task(task_id):
     task = [t for t in tasks if t['id'] == task_id]
     if len(task) == 0:
@@ -65,6 +66,7 @@ def create_task():
     tasks.append(task)
     return jsonify({'task': task}), 201
 
+
 @app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
     task = [t for t in tasks if t['id'] == task_id]
@@ -76,6 +78,7 @@ def update_task(task_id):
     task[0]['description'] = request.json.get('description', task[0]['description'])
     task[0]['done'] = request.json.get('done', task[0]['done'])
     return jsonify({'task': task[0]})
+
 
 @app.route('/todo/api/v1.0/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
